@@ -565,4 +565,16 @@ function openFromHash() {
 }
 window.addEventListener("hashchange", openFromHash);
 openFromHash();
+
+// Quand la page est embarquée en iframe (site 2M2C), on annonce notre hauteur
+// réelle au parent à chaque changement de contenu (accordéon, ancre, resize)
+// pour qu'il redimensionne l'iframe — évite le double ascenseur imbriqué.
+if (window.parent !== window) {
+  const reportHeight = function () {
+    window.parent.postMessage({ type: "vv-dossier-resize", height: document.documentElement.scrollHeight }, "*");
+  };
+  new ResizeObserver(reportHeight).observe(document.body);
+  window.addEventListener("load", reportHeight);
+  reportHeight();
+}
 </script>
