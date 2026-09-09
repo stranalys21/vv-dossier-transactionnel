@@ -383,7 +383,7 @@
       <div class="stat"><span class="stat-num">19</span><span class="stat-label">messages au total</span></div>
       <div class="stat"><span class="stat-num">11</span><span class="stat-label">emails</span></div>
       <div class="stat"><span class="stat-num">8</span><span class="stat-label">SMS</span></div>
-      <div class="stat"><span class="stat-num">4</span><span class="stat-label">étapes du parcours</span></div>
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">situations spécifiques</span></div>
     </div>
   </header>
 
@@ -409,8 +409,7 @@
   <div id="phases"></div>
 
   <footer class="dossier-footer">
-    Contenu synchronisé depuis la table Airtable « Textes Nurturing » — dernière extraction : <span id="sync-date"></span>. Les emails sont affichés dans leur mise en page réelle ; les SMS dans leur longueur d'envoi exacte.<br>
-    L'icône de lien sur chaque ligne copie une URL qui ouvre directement ce message — pratique pour la citer depuis un autre document.
+    Contenu synchronisé depuis la table Airtable « Textes Nurturing » — dernière extraction : <span id="sync-date"></span>. Les emails sont affichés dans leur mise en page réelle ; les SMS dans leur longueur d'envoi exacte.
   </footer>
 
 </div>
@@ -431,6 +430,31 @@ const checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" st
 
 function escapeHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// navigator.clipboard.writeText() est silencieusement refusé par le navigateur
+// dans une iframe tierce (site 2M2C) sans l'attribut allow="clipboard-write" —
+// on retombe alors sur la méthode historique (textarea + execCommand), qui elle
+// fonctionne dans ce contexte, pour ne jamais copier "dans le vide".
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(function () {
+      legacyCopy(text);
+    });
+  } else {
+    legacyCopy(text);
+  }
+}
+function legacyCopy(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand("copy"); } catch (err) {}
+  document.body.removeChild(ta);
 }
 
 // Note explicative sous chaque aperçu — la mention du conseiller (Julien) n'est
@@ -512,14 +536,14 @@ for (const phaseNum of [1, 2, 3, 4]) {
   const head = document.createElement("div");
   head.className = "phase-head";
   head.innerHTML =
-    '<span class="phase-tag">ÉTAPE ' + phaseNum + '</span><span class="phase-title">' + PHASES[phaseNum] + '</span>' +
-    '<button type="button" class="link-btn phase-link-btn" title="Copier le lien direct vers cette étape">' + linkSvg + '</button>';
+    '<span class="phase-tag">SITUATION ' + phaseNum + '</span><span class="phase-title">' + PHASES[phaseNum] + '</span>' +
+    '<button type="button" class="link-btn phase-link-btn" title="Copier le lien direct vers cette situation">' + linkSvg + '</button>';
   section.appendChild(head);
 
   const phaseLinkBtn = head.querySelector(".phase-link-btn");
   phaseLinkBtn.addEventListener("click", function () {
     const url = location.origin + location.pathname + "#etape-" + phaseNum;
-    navigator.clipboard.writeText(url).catch(function () {});
+    copyToClipboard(url);
     const original = phaseLinkBtn.innerHTML;
     phaseLinkBtn.innerHTML = checkSvg;
     phaseLinkBtn.classList.add("copied");
@@ -558,7 +582,7 @@ for (const phaseNum of [1, 2, 3, 4]) {
       e.preventDefault();
       e.stopPropagation();
       const url = location.origin + location.pathname + "#msg-" + code;
-      navigator.clipboard.writeText(url).catch(function () {});
+      copyToClipboard(url);
       const original = linkBtn.innerHTML;
       linkBtn.innerHTML = checkSvg;
       linkBtn.classList.add("copied");
