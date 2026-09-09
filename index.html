@@ -308,9 +308,10 @@
     max-width: 100%;
     margin: 0 auto;
     background: linear-gradient(180deg, #38392F, #1C1D18);
-    border-radius: 34px;
-    padding: 14px 10px 18px;
+    border-radius: 34px 34px 0 0;
+    padding: 14px 10px 0;
     box-shadow: var(--shadow);
+    overflow: hidden;
   }
   .phone-notch {
     width: 64px;
@@ -321,9 +322,9 @@
   }
   .phone-screen {
     background: var(--panel);
-    border-radius: 20px;
-    padding: 16px 14px 14px;
-    min-height: 120px;
+    border-radius: 20px 20px 0 0;
+    padding: 16px 14px 24px;
+    min-height: 100px;
   }
   .phone-contact {
     display: flex;
@@ -430,6 +431,26 @@ const checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" st
 
 function escapeHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// Note explicative sous chaque aperçu — la mention du conseiller (Julien) n'est
+// ajoutée que pour les messages qui l'utilisent réellement (raw = contenu source,
+// avant fictionalize, pour détecter la présence de la variable agent_prenom).
+function buildNote(type, raw) {
+  const hasAgent = /agent_prenom/.test(raw);
+  let note;
+  if (type === "email") {
+    note = "l’email montré ici est la réplique exacte de l’email envoyé au prospect. Nous avons pris l’exemple ici d’un prospect qui s’appellerait Camille Lefebvre — chaque prospect verra son propre nom et prénom apparaître à la place de Camille Lefebvre, évidemment. Nous avons aussi pris l’exemple d’un email envoyé dans le cadre du partenariat NOVALIS — là aussi, tout autre partenariat sera automatiquement affiché à la place.";
+    if (hasAgent) {
+      note += " Le conseiller cité ici, Julien Moreau, est lui aussi un exemple illustratif — le prospect verra le nom du conseiller qui lui est réellement assigné.";
+    }
+  } else {
+    note = "le texte sms montré ici est la réplique exacte du sms envoyé au prospect. Nous avons pris l’exemple ici d’un prospect qui s’appellerait Camille — chaque prospect verra évidemment son propre prénom apparaître à la place de Camille. Nous avons aussi pris l’exemple d’un sms envoyé dans le cadre du partenariat NOVALIS — là aussi, tout autre partenariat sera automatiquement affiché à la place.";
+    if (hasAgent) {
+      note += " Le conseiller cité ici, Julien, est lui aussi un exemple illustratif — le prospect verra le prénom du conseiller qui lui est réellement assigné.";
+    }
+  }
+  return note;
 }
 
 // Remplace les variables de template par un exemple fictif illustratif,
@@ -558,7 +579,7 @@ for (const phaseNum of [1, 2, 3, 4]) {
       previewCol.innerHTML =
         '<p class="preview-label">Aperçu email — exemple illustratif</p>' +
         '<div class="email-frame-wrap"><iframe class="preview-frame" title="Aperçu ' + code + '"></iframe></div>' +
-        '<p class="preview-note"><strong>Note :</strong> l’email montré ici est la réplique exacte de l’email envoyé au prospect. Nous avons pris l’exemple ici d’un prospect qui s’appellerait Camille Lefebvre — chaque prospect verra son propre nom et prénom apparaître à la place de Camille Lefebvre, évidemment. Nous avons aussi pris l’exemple d’un email envoyé dans le cadre du partenariat NOVALIS — là aussi, tout autre partenariat sera automatiquement affiché à la place.</p>';
+        '<p class="preview-note"><strong>Note :</strong> ' + buildNote("email", m.content) + '</p>';
     } else {
       previewCol.innerHTML =
         '<p class="preview-label">Aperçu du SMS — exemple illustratif</p>' +
@@ -566,7 +587,8 @@ for (const phaseNum of [1, 2, 3, 4]) {
         '<div class="phone-contact"><span class="avatar">VV</span>Vie Verte</div>' +
         '<div class="sms-bubble">' + escapeHtml(illustrated) + '</div>' +
         '<div class="sms-meta">' + illustrated.length + ' caractères</div>' +
-        '</div></div>';
+        '</div></div>' +
+        '<p class="preview-note"><strong>Note :</strong> ' + buildNote("sms", m.content) + '</p>';
     }
     inner.appendChild(previewCol);
 
