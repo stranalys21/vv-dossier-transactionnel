@@ -303,21 +303,57 @@
   }
   .preview-note strong { color: var(--ink); }
 
-  .sms-phone {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 18px 16px;
+  .phone-mock {
+    width: 300px;
+    max-width: 100%;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #38392F, #1C1D18);
+    border-radius: 34px;
+    padding: 14px 10px 18px;
     box-shadow: var(--shadow);
   }
-  .sms-bubble {
-    background: var(--accent-tint);
+  .phone-notch {
+    width: 64px;
+    height: 16px;
+    background: #1C1D18;
+    border-radius: 10px;
+    margin: 0 auto 10px;
+  }
+  .phone-screen {
+    background: var(--panel);
+    border-radius: 20px;
+    padding: 16px 14px 14px;
+    min-height: 120px;
+  }
+  .phone-contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
     color: var(--ink);
-    border-radius: 16px 16px 16px 4px;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phone-contact .avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--sms-accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .sms-bubble {
+    background: var(--sms-tint);
+    color: var(--ink);
+    border-radius: 4px 16px 16px 16px;
     padding: 12px 15px;
     font-size: 14px;
     line-height: 1.45;
-    max-width: 90%;
+    max-width: 88%;
   }
   .sms-meta {
     margin-top: 10px;
@@ -526,8 +562,11 @@ for (const phaseNum of [1, 2, 3, 4]) {
     } else {
       previewCol.innerHTML =
         '<p class="preview-label">Aperçu du SMS — exemple illustratif</p>' +
-        '<div class="sms-phone"><div class="sms-bubble">' + escapeHtml(illustrated) + '</div>' +
-        '<div class="sms-meta">' + illustrated.length + ' caractères</div></div>';
+        '<div class="phone-mock"><div class="phone-notch"></div><div class="phone-screen">' +
+        '<div class="phone-contact"><span class="avatar">VV</span>Vie Verte</div>' +
+        '<div class="sms-bubble">' + escapeHtml(illustrated) + '</div>' +
+        '<div class="sms-meta">' + illustrated.length + ' caractères</div>' +
+        '</div></div>';
     }
     inner.appendChild(previewCol);
 
