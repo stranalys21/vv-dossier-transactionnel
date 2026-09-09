@@ -492,6 +492,7 @@ function fictionalize(raw) {
 const container = document.getElementById("phases");
 const codes = Object.keys(MESSAGES);
 const byPhase = {};
+let openDetails = null; // un seul bloc ouvert à la fois sur toute la page
 for (const code of codes) {
   const m = MESSAGES[code];
   (byPhase[m.phase] = byPhase[m.phase] || []).push(code);
@@ -596,12 +597,20 @@ for (const phaseNum of [1, 2, 3, 4]) {
     details.appendChild(detail);
 
     details.addEventListener("toggle", function () {
-      if (details.open && m.type === "email") {
-        const frame = details.querySelector("iframe.preview-frame");
-        if (frame && !frame.dataset.loaded) {
-          frame.srcdoc = illustrated;
-          frame.dataset.loaded = "1";
+      if (details.open) {
+        if (openDetails && openDetails !== details) {
+          openDetails.open = false;
         }
+        openDetails = details;
+        if (m.type === "email") {
+          const frame = details.querySelector("iframe.preview-frame");
+          if (frame && !frame.dataset.loaded) {
+            frame.srcdoc = illustrated;
+            frame.dataset.loaded = "1";
+          }
+        }
+      } else if (openDetails === details) {
+        openDetails = null;
       }
     });
 
