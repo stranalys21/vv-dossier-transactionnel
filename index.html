@@ -609,6 +609,11 @@ for (const phaseNum of [1, 2, 3, 4]) {
             frame.dataset.loaded = "1";
           }
         }
+        // La fermeture du bloc précédent (au-dessus) décale la mise en page :
+        // on recentre le bloc qu'on vient d'ouvrir pour ne pas le perdre de vue.
+        requestAnimationFrame(function () {
+          details.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
       } else if (openDetails === details) {
         openDetails = null;
       }
@@ -628,9 +633,10 @@ function openFromHash() {
   if (!id) return;
   const target = document.getElementById(id);
   if (!target) return;
+  const isMsgRow = target.classList.contains("msg-row");
   target.open = true;
   requestAnimationFrame(function () {
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.scrollIntoView({ behavior: "smooth", block: isMsgRow ? "center" : "start" });
   });
 }
 window.addEventListener("hashchange", openFromHash);
