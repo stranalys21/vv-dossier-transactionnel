@@ -456,7 +456,7 @@ function legacyCopy(text) {
   ta.style.left = "0";
   ta.style.opacity = "0";
   document.body.appendChild(ta);
-  ta.focus();
+  ta.focus({ preventScroll: true });
   ta.select();
   try { document.execCommand("copy"); } catch (err) {}
   document.body.removeChild(ta);
