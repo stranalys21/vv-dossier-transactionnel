@@ -462,7 +462,7 @@ function legacyCopy(text) {
   document.body.removeChild(ta);
 }
 
-// Note explicative sous chaque aperçu — la mention du conseiller (Julien) n'est
+// Note explicative sous chaque aperçu — la mention du conseiller (Marine) n'est
 // ajoutée que pour les messages qui l'utilisent réellement (raw = contenu source,
 // avant fictionalize, pour détecter la présence de la variable agent_prenom).
 function buildNote(type, raw) {
@@ -471,12 +471,12 @@ function buildNote(type, raw) {
   if (type === "email") {
     note = "l’email montré ici est la réplique exacte de l’email envoyé au prospect. Nous avons pris l’exemple ici d’un prospect qui s’appellerait Camille Lefebvre — chaque prospect verra son propre nom et prénom apparaître à la place de Camille Lefebvre, évidemment. Nous avons aussi pris l’exemple d’un email envoyé dans le cadre du partenariat NOVALIS — là aussi, tout autre partenariat sera automatiquement affiché à la place.";
     if (hasAgent) {
-      note += " Le conseiller cité ici, Julien Moreau, est lui aussi un exemple illustratif — le prospect verra le nom du conseiller qui lui est réellement assigné.";
+      note += " Le conseiller cité ici, Marine Arcidiacono, est lui aussi un exemple illustratif — le prospect verra le nom du conseiller qui lui est réellement assigné.";
     }
   } else {
     note = "le texte sms montré ici est la réplique exacte du sms envoyé au prospect. Nous avons pris l’exemple ici d’un prospect qui s’appellerait Camille — chaque prospect verra évidemment son propre prénom apparaître à la place de Camille. Nous avons aussi pris l’exemple d’un sms envoyé dans le cadre du partenariat NOVALIS — là aussi, tout autre partenariat sera automatiquement affiché à la place.";
     if (hasAgent) {
-      note += " Le conseiller cité ici, Julien, est lui aussi un exemple illustratif — le prospect verra le prénom du conseiller qui lui est réellement assigné.";
+      note += " Le conseiller cité ici, Marine, est lui aussi un exemple illustratif — le prospect verra le prénom du conseiller qui lui est réellement assigné.";
     }
   }
   return note;
@@ -490,10 +490,10 @@ const EXAMPLES = {
   nom: "Lefebvre",
   mention_prefixe: "En partenariat avec",
   nom_source: "NOVALIS",
-  agent_prenom: "Julien",
-  agent_nom: "Moreau",
+  agent_prenom: "Marine",
+  agent_nom: "Arcidiacono",
   agent_tel_mobile: "06 12 34 56 78",
-  lien_fiche_agent: "#",
+  lien_fiche_agent: "https://2m2c.fr/team-members/marine-arcidiacono-01",
   logo_partenaire: "data:image/png;base64,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"
 };
 
