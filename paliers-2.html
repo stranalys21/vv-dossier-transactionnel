@@ -86,18 +86,13 @@
 
   .wrap { max-width: 1040px; margin: 0 auto; padding: 48px 24px 40px; }
 
-  .part-nav {
+  .header-top {
     display: flex;
-    width: fit-content;
     align-items: center;
-    gap: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: none;
-    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
   }
-  .part-nav:hover { color: var(--ink); text-decoration: underline; }
 
   .eyebrow {
     font-family: 'IBM Plex Mono', monospace;
@@ -109,8 +104,25 @@
     display: inline-block;
     padding: 5px 12px;
     border-radius: 20px;
-    margin-bottom: 16px;
   }
+
+  .part-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--entry-ink);
+    background: var(--panel);
+    border: 1.5px solid var(--entry);
+    padding: 5px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .part-switch:hover { background: var(--entry-tint); }
   h1 {
     font-family: 'Big Shoulders Display', Arial, sans-serif;
     font-weight: 800;
@@ -346,8 +358,10 @@
 <div class="wrap">
 
   <header>
-    <a class="part-nav" href="https://stranalys21.github.io/vv-dossier-transactionnel/paliers-1.html" target="_blank" rel="noopener">← Partie 1 : retards, NRP &amp; RDV manqués</a>
-    <span class="eyebrow">Aide-mémoire agents · Partie 2</span>
+    <div class="header-top">
+      <span class="eyebrow">Paliers de traitement : chronologie et détails — Partie 2</span>
+      <a class="part-switch" href="https://pairforma.net/fiche_paliers_traitement-partie1/" target="_top">← Voir Partie 1</a>
+    </div>
     <h1>Ce que le CRM fait tout seul, une fois la discussion engagée</h1>
     <p class="lede">Trois situations prennent le relais dès qu'un conseiller a réellement échangé avec le prospect : <strong>suivi sans devis</strong>, <strong>devis envoyé</strong>, et <strong>mise en attente volontaire</strong> (Différé). Voici comment chacune évolue automatiquement, et comment la débloquer.</p>
   </header>
