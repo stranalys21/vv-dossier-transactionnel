@@ -1,0 +1,660 @@
+<title>Paliers de traitement — Partie 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root {
+    --bg: #F3F4F1;
+    --panel: #FFFFFF;
+    --panel-soft: #F8F8F6;
+    --ink: #1C231E;
+    --body-text: #444F47;
+    --muted: #6B766E;
+    --muted2: #8B958D;
+    --border: #E2E5DF;
+    --shadow: 0 1px 2px rgba(20,24,20,0.04), 0 8px 24px rgba(20,24,20,0.06);
+
+    --entry: #3E6B8F; --entry-tint: #DCE9F2; --entry-ink: #244157;
+    --success: #3E7A4C; --success-tint: #DFEEE2; --success-ink: #245430;
+    --closed: #6B7280; --closed-tint: #E7E8E9; --closed-ink: #464B54;
+
+    --s1: #1F8A7A; --s1-tint: #D9F0EC; --s1-ink: #0F564C;
+    --s2: #147A8C; --s2-tint: #D3ECF1; --s2-ink: #0B4A56;
+    --s3: #0E5F73; --s3-tint: #CFE7ED; --s3-ink: #083E4C;
+
+    --d1: #B8860B; --d1-tint: #F6ECCF; --d1-ink: #6E4F06;
+    --d2: #A66A00; --d2-tint: #F3E3C4; --d2-ink: #603D00;
+    --d3: #8C4A12; --d3-tint: #EFDCC8; --d3-ink: #582D0B;
+
+    --f1: #B4693F; --f1-tint: #F3E1D4; --f1-ink: #713F22;
+    --f2: #A0542E; --f2-tint: #EFD6C7; --f2-ink: #62331A;
+    --f3: #8C4325; --f3-tint: #EAD0C1; --f3-ink: #532716;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171A16; --panel: #21251F; --panel-soft: #262A23;
+      --ink: #EBEDE7; --body-text: #C6CCC4; --muted: #98A196; --muted2: #79827A;
+      --border: #33372F; --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 8px 28px rgba(0,0,0,0.4);
+
+      --entry: #6FA0C4; --entry-tint: #1E2D38; --entry-ink: #BFDCEE;
+      --success: #6FB080; --success-tint: #1E3324; --success-ink: #B9E0C4;
+      --closed: #9BA2AC; --closed-tint: #2A2C30; --closed-ink: #C7CBD1;
+
+      --s1: #4FC7B5; --s1-tint: #163430; --s1-ink: #A9E9DF;
+      --s2: #46AEC2; --s2-tint: #142E33; --s2-ink: #A0DCE8;
+      --s3: #3D93A8; --s3-tint: #12282D; --s3-ink: #93CBDA;
+
+      --d1: #E0B24A; --d1-tint: #362A11; --d1-ink: #F2DA9E;
+      --d2: #D49A3E; --d2-tint: #332711; --d2-ink: #EDD09A;
+      --d3: #C4863E; --d3-tint: #302212; --d3-ink: #E9C79E;
+
+      --f1: #D69468; --f1-tint: #3A2618; --f1-ink: #EFC6A8;
+      --f2: #C77F52; --f2-tint: #362213; --f2-ink: #E9B893;
+      --f3: #B56C44; --f3-tint: #331F10; --f3-ink: #E2AA85;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #171A16; --panel: #21251F; --panel-soft: #262A23;
+    --ink: #EBEDE7; --body-text: #C6CCC4; --muted: #98A196; --muted2: #79827A;
+    --border: #33372F; --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 8px 28px rgba(0,0,0,0.4);
+
+    --entry: #6FA0C4; --entry-tint: #1E2D38; --entry-ink: #BFDCEE;
+    --success: #6FB080; --success-tint: #1E3324; --success-ink: #B9E0C4;
+    --closed: #9BA2AC; --closed-tint: #2A2C30; --closed-ink: #C7CBD1;
+
+    --s1: #4FC7B5; --s1-tint: #163430; --s1-ink: #A9E9DF;
+    --s2: #46AEC2; --s2-tint: #142E33; --s2-ink: #A0DCE8;
+    --s3: #3D93A8; --s3-tint: #12282D; --s3-ink: #93CBDA;
+
+    --d1: #E0B24A; --d1-tint: #362A11; --d1-ink: #F2DA9E;
+    --d2: #D49A3E; --d2-tint: #332711; --d2-ink: #EDD09A;
+    --d3: #C4863E; --d3-tint: #302212; --d3-ink: #E9C79E;
+
+    --f1: #D69468; --f1-tint: #3A2618; --f1-ink: #EFC6A8;
+    --f2: #C77F52; --f2-tint: #362213; --f2-ink: #E9B893;
+    --f3: #B56C44; --f3-tint: #331F10; --f3-ink: #E2AA85;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--body-text);
+    font-family: 'Public Sans', Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 48px 24px 40px; }
+
+  .part-nav {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 18px;
+  }
+  .part-nav:hover { color: var(--ink); text-decoration: underline; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--entry-ink);
+    background: var(--entry-tint);
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 14px 0;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--body-text);
+    max-width: 68ch;
+    margin: 0 0 8px 0;
+  }
+  .lede strong { color: var(--ink); }
+
+  /* --- Legend strip --- */
+  .legend-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 14px;
+    margin: 28px 0 40px;
+    padding: 16px 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .legend-chip { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .flow-arrow { color: var(--muted2); font-size: 15px; }
+  .flow-step { font-size: 12.5px; color: var(--body-text); white-space: nowrap; }
+
+  /* --- Tracks grid --- */
+  .tracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .tracks { grid-template-columns: 1fr; }
+  }
+
+  .track-head {
+    margin-bottom: 18px;
+  }
+  .track-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .track-title {
+    font-family: 'Big Shoulders Display', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .track-sub { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+
+  .rail { position: relative; padding-left: 28px; }
+  .rail::before {
+    content: "";
+    position: absolute;
+    left: 9px; top: 6px; bottom: 6px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--entry), var(--rail-color, var(--muted2)), var(--closed));
+    opacity: 0.55;
+  }
+  .rail.open::before {
+    background: linear-gradient(to bottom, var(--entry), var(--rail-color, var(--muted2)));
+  }
+
+  .station { position: relative; padding-bottom: 22px; }
+  .station:last-child { padding-bottom: 0; }
+  .station::before {
+    content: "";
+    position: absolute;
+    left: -28px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--dot, var(--muted2));
+    border: 2px solid var(--panel);
+    box-shadow: 0 0 0 2px var(--dot, var(--muted2));
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    box-shadow: var(--shadow);
+  }
+  .card-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .day-num {
+    font-family: 'Big Shoulders Display', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--num-color, var(--ink));
+    line-height: 1;
+  }
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--badge-bg, var(--panel-soft));
+    color: var(--badge-ink, var(--muted));
+    white-space: nowrap;
+  }
+  .statut-badge {
+    font-size: 11.5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .card-desc { font-size: 13px; line-height: 1.48; color: var(--body-text); margin-bottom: 0; }
+
+  .card.entry { border-left: 3px solid var(--entry); }
+  .card.closed { background: var(--closed-tint); border-color: var(--closed); }
+  .card.closed .card-desc { color: var(--closed-ink); }
+  .card.dormant { border-style: dashed; }
+  .card.open-end { border-style: dashed; border-color: var(--rail-color, var(--border)); }
+
+  .exit-box {
+    margin-top: 18px;
+    background: var(--success-tint);
+    border: 1px solid var(--success);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--success-ink);
+  }
+  .exit-box strong { color: var(--success-ink); }
+  .exit-box .exit-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+    opacity: 0.85;
+  }
+  .exit-box.neutral {
+    background: var(--panel-soft);
+    border-color: var(--border);
+    color: var(--body-text);
+  }
+  .exit-box.neutral strong { color: var(--ink); }
+  .exit-box.neutral .exit-label { color: var(--muted); opacity: 1; }
+
+  /* --- Recap table --- */
+  .recap {
+    margin-top: 56px;
+  }
+  h2 {
+    font-family: 'Big Shoulders Display', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--ink);
+    margin: 0 0 14px 0;
+  }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+  table.recap-table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: 13px; min-width: 560px; }
+  table.recap-table th {
+    text-align: left;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted2); font-weight: 600;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-soft);
+  }
+  table.recap-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+  }
+  table.recap-table tr:last-child td { border-bottom: none; }
+  table.recap-table td.page-cell { color: var(--ink); font-weight: 600; white-space: nowrap; }
+  table.recap-table td.palier-cell { white-space: nowrap; }
+  table.recap-table tr.block-start td { border-top: 2px solid var(--ink); }
+
+  .statut-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 14px;
+    padding: 3px 12px;
+    white-space: nowrap;
+  }
+  .statut-hint {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .recap-note {
+    margin-top: 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 14px 18px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--body-text);
+  }
+
+  footer.page-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted2);
+    line-height: 1.6;
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <a class="part-nav" href="https://stranalys21.github.io/vv-dossier-transactionnel/paliers-1.html" target="_blank" rel="noopener">← Partie 1 : retards, NRP &amp; RDV manqués</a>
+    <span class="eyebrow">Aide-mémoire agents · Partie 2</span>
+    <h1>Ce que le CRM fait tout seul, une fois la discussion engagée</h1>
+    <p class="lede">Trois situations prennent le relais dès qu'un conseiller a réellement échangé avec le prospect : <strong>suivi sans devis</strong>, <strong>devis envoyé</strong>, et <strong>mise en attente volontaire</strong> (Différé). Voici comment chacune évolue automatiquement, et comment la débloquer.</p>
+  </header>
+
+  <div class="legend-strip">
+    <span class="legend-chip"><span class="legend-dot" style="background:var(--entry)"></span>Point de départ</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">🔘 Évolutions des paliers de traitement</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">📑 Classement automatique</span>
+    <span class="flow-arrow">→</span>
+    <span class="legend-chip"><span class="legend-dot" style="background:var(--success)"></span>Comment arrêter le compte à rebours</span>
+  </div>
+
+  <div class="tracks">
+
+    <!-- TRACK D — SUIVI SANS DEVIS -->
+    <div class="track" style="--rail-color:#0E5F73;">
+      <div class="track-head">
+        <span class="track-tag">Piste 4 — contact établi, sans devis</span>
+        <div class="track-title">Le prospect a été joint, pas encore de devis</div>
+        <div class="track-sub">Statut « Suivi (follow-up) » · Palier de traitement</div>
+      </div>
+
+      <div class="rail">
+
+        <div class="station" style="--dot:var(--entry);">
+          <div class="card entry">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--entry-ink)">J+0</span>
+              <span class="badge" style="--badge-bg:var(--entry-tint); --badge-ink:var(--entry-ink);">Suivi récent</span>
+              <span class="statut-badge">Statut : Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Le prospect a été contacté avec succès. Nouveau compte à rebours, ancré sur le passage en Suivi.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--s1);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--s1-ink)">J+3</span>
+              <span class="badge" style="--badge-bg:var(--s1-tint); --badge-ink:var(--s1-ink);">Suivi J+3</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">3 jours ouvrés depuis le passage en Suivi, toujours pas de devis émis.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--s2);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--s2-ink)">J+7</span>
+              <span class="badge" style="--badge-bg:var(--s2-tint); --badge-ink:var(--s2-ink);">Suivi J+7</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Toujours pas de devis, 7 jours ouvrés après le passage en Suivi.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--s3);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--s3-ink)">J+14</span>
+              <span class="badge" style="--badge-bg:var(--s3-tint); --badge-ink:var(--s3-ink);">Suivi J+14</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Toujours pas de devis, 14 jours ouvrés après le passage en Suivi.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--muted2);">
+          <div class="card dormant">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--muted)">J>14→</span>
+              <span class="badge">Suivi en attente</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Le lead reste visible, en sursis, jusqu'au classement automatique.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--closed);">
+          <div class="card closed">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--closed-ink)">J+90</span>
+              <span class="badge" style="--badge-bg:var(--closed); --badge-ink:#fff;">📑 Suivi classé</span>
+            </div>
+            <div class="card-desc">Dossier clôturé automatiquement, faute d'évolution.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="exit-box">
+        <span class="exit-label">Pour arrêter ce compte à rebours</span>
+        <strong>Envoyez un devis</strong> — le lead bascule automatiquement sur la piste Devis (ci-contre), compteur remis à zéro. Ou passez le Statut à SIGNÉ, NON SIGNÉ ou Différé selon l'issue réelle — à n'importe quel stade.
+      </div>
+    </div>
+
+    <!-- TRACK E — DEVIS -->
+    <div class="track" style="--rail-color:#8C4A12;">
+      <div class="track-head">
+        <span class="track-tag">Piste 5 — devis envoyé</span>
+        <div class="track-title">Un devis a été transmis au prospect</div>
+        <div class="track-sub">Statut « Suivi (follow-up) », avec devis · Palier de traitement</div>
+      </div>
+
+      <div class="rail">
+
+        <div class="station" style="--dot:var(--entry);">
+          <div class="card entry">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--entry-ink)">J+0</span>
+              <span class="badge" style="--badge-bg:var(--entry-tint); --badge-ink:var(--entry-ink);">Devis récent</span>
+              <span class="statut-badge">Statut : Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Le devis vient d'être transmis. Compteur remis à zéro, ancré sur la <strong>date d'envoi du devis</strong> — pas sur le passage initial en Suivi.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--d1);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--d1-ink)">J+3</span>
+              <span class="badge" style="--badge-bg:var(--d1-tint); --badge-ink:var(--d1-ink);">Devis J+3</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">3 jours ouvrés depuis l'envoi du devis, toujours pas de réponse.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--d2);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--d2-ink)">J+7</span>
+              <span class="badge" style="--badge-bg:var(--d2-tint); --badge-ink:var(--d2-ink);">Devis J+7</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Toujours pas de réponse, 7 jours ouvrés après l'envoi du devis.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--d3);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--d3-ink)">J+14</span>
+              <span class="badge" style="--badge-bg:var(--d3-tint); --badge-ink:var(--d3-ink);">Devis J+14</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Toujours pas de réponse, 14 jours ouvrés après l'envoi du devis.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--muted2);">
+          <div class="card dormant">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--muted)">J>14→</span>
+              <span class="badge">Devis en attente</span>
+              <span class="statut-badge">Statut : toujours Suivi (follow-up)</span>
+            </div>
+            <div class="card-desc">Le lead reste visible, en sursis, jusqu'au classement automatique.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--closed);">
+          <div class="card closed">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--closed-ink)">J+90</span>
+              <span class="badge" style="--badge-bg:var(--closed); --badge-ink:#fff;">📑 Devis classé</span>
+            </div>
+            <div class="card-desc">Dossier clôturé automatiquement, faute de réponse au devis.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="exit-box">
+        <span class="exit-label">Pour arrêter ce compte à rebours</span>
+        <strong>Passez le Statut à SIGNÉ</strong> dès la signature, ou à <strong>NON SIGNÉ</strong> si le devis est refusé — à n'importe quel stade.
+      </div>
+    </div>
+
+    <!-- TRACK F — DIFFÉRÉ -->
+    <div class="track" style="--rail-color:#8C4325;">
+      <div class="track-head">
+        <span class="track-tag">Piste 6 — mis en attente par l'agent</span>
+        <div class="track-title">Le suivi est volontairement repoussé</div>
+        <div class="track-sub">Statut « Différé » · Palier de traitement</div>
+      </div>
+
+      <div class="rail open">
+
+        <div class="station" style="--dot:var(--entry);">
+          <div class="card entry">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--entry-ink)">J+0</span>
+              <span class="badge" style="--badge-bg:var(--entry-tint); --badge-ink:var(--entry-ink);">Différé récent</span>
+              <span class="statut-badge">Statut : Différé</span>
+            </div>
+            <div class="card-desc">L'agent a choisi de repousser le suivi (échéance annuelle, budget…).</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--f1);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--f1-ink)">J+30</span>
+              <span class="badge" style="--badge-bg:var(--f1-tint); --badge-ink:var(--f1-ink);">Différé J+30</span>
+              <span class="statut-badge">Statut : toujours Différé</span>
+            </div>
+            <div class="card-desc">Purement informatif — aucune relance, aucun classement.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--f2);">
+          <div class="card">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--f2-ink)">J+90</span>
+              <span class="badge" style="--badge-bg:var(--f2-tint); --badge-ink:var(--f2-ink);">Différé J+90</span>
+              <span class="statut-badge">Statut : toujours Différé</span>
+            </div>
+            <div class="card-desc">Toujours purement informatif.</div>
+          </div>
+        </div>
+
+        <div class="station" style="--dot:var(--f3);">
+          <div class="card open-end">
+            <div class="card-top">
+              <span class="day-num" style="--num-color:var(--f3-ink)">J+180</span>
+              <span class="badge" style="--badge-bg:var(--f3-tint); --badge-ink:var(--f3-ink);">Différé J+180</span>
+              <span class="statut-badge">Statut : toujours Différé</span>
+            </div>
+            <div class="card-desc">Dernier palier affiché — le compteur plafonne ici. <strong>Aucun classement automatique n'a jamais lieu</strong> sur cette piste, même au-delà.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="exit-box neutral">
+        <span class="exit-label">Pour reprendre la main</span>
+        <strong>Passez le Statut</strong> dès que vous êtes prêt à relancer le dossier — rien ne se fait tout seul ici, c'est volontaire : un différé est souvent légitime et long (échéance annuelle, budget), seul l'agent peut juger du bon moment.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="recap">
+    <h2>Table de référence rapide</h2>
+    <div class="table-wrap">
+      <table class="recap-table">
+        <thead>
+          <tr><th>Statut</th><th>Palier de traitement</th><th>Délai</th><th>Email</th><th>SMS</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="page-cell" rowspan="5"><span class="statut-tag" style="background:#2E6357; color:#FFFFFF;">Suivi (follow-up)</span> <span class="statut-hint">· sans devis</span></td>
+            <td class="palier-cell"><span class="badge" style="--badge-bg:var(--entry-tint); --badge-ink:var(--entry-ink);">Suivi récent</span></td><td>J+0</td><td>—</td><td>—</td>
+          </tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--s1-tint); --badge-ink:var(--s1-ink);">Suivi J+3</span></td><td>J+3 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--s2-tint); --badge-ink:var(--s2-ink);">Suivi J+7</span></td><td>J+7 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--s3-tint); --badge-ink:var(--s3-ink);">Suivi J+14</span></td><td>J+14 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge">Suivi en attente</span></td><td>J+15 à J+89</td><td>—</td><td>—</td></tr>
+          <tr class="block-start">
+            <td class="page-cell"><span class="statut-tag" style="background:#F2E6A8; color:#6B5A0C;">Suivi classé</span></td>
+            <td class="palier-cell"></td><td>J+90 ouvrés</td><td>—</td><td>—</td>
+          </tr>
+          <tr class="block-start">
+            <td class="page-cell" rowspan="5"><span class="statut-tag" style="background:#2E6357; color:#FFFFFF;">Suivi (follow-up)</span> <span class="statut-hint">· devis envoyé</span></td>
+            <td class="palier-cell"><span class="badge" style="--badge-bg:var(--entry-tint); --badge-ink:var(--entry-ink);">Devis récent</span></td><td>J+0</td><td>—</td><td>—</td>
+          </tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--d1-tint); --badge-ink:var(--d1-ink);">Devis J+3</span></td><td>J+3 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--d2-tint); --badge-ink:var(--d2-ink);">Devis J+7</span></td><td>J+7 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--d3-tint); --badge-ink:var(--d3-ink);">Devis J+14</span></td><td>J+14 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge">Devis en attente</span></td><td>J+15 à J+89</td><td>—</td><td>—</td></tr>
+          <tr class="block-start">
+            <td class="page-cell"><span class="statut-tag" style="background:#E0A930; color:#5C3D06;">Devis classé</span></td>
+            <td class="palier-cell"></td><td>J+90 ouvrés</td><td>—</td><td>—</td>
+          </tr>
+          <tr class="block-start">
+            <td class="page-cell" rowspan="4"><span class="statut-tag" style="background:#7A2A12; color:#FFFFFF;">Différé</span></td>
+            <td class="palier-cell"><span class="badge" style="--badge-bg:var(--entry-tint); --badge-ink:var(--entry-ink);">Différé récent</span></td><td>J+0</td><td>—</td><td>—</td>
+          </tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--f1-tint); --badge-ink:var(--f1-ink);">Différé J+30</span></td><td>J+30 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--f2-tint); --badge-ink:var(--f2-ink);">Différé J+90</span></td><td>J+90 ouvrés</td><td>—</td><td>—</td></tr>
+          <tr><td class="palier-cell"><span class="badge" style="--badge-bg:var(--f3-tint); --badge-ink:var(--f3-ink);">Différé J+180</span></td><td>J+180 ouvrés</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="recap-note">
+      Contrairement à la Partie 1, aucun email ni SMS automatique n'est associé à ces paliers à ce jour — seul le Palier de traitement évolue, à titre informatif pour l'agent. Sur la piste Différé, il n'existe pas non plus de classement automatique, même au-delà de J+180 : c'est volontaire, un dossier différé étant souvent légitime (échéance annuelle, budget) — la décision reste entièrement à l'appréciation de l'agent.
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    Ancrages, seuils et paliers vérifiés dans le script quotidien interne au CRM (v8, 14/09/2026) et dans la Bible technique du projet (sessions 005, 009, 011). Les étiquettes Statut « Suivi classé » , Devis classé, Suivi (follow-up) et Différé reprennent toutes la couleur réelle du CRM. Tous les délais sont en jours <em>ouvrés</em>.
+  </footer>
+
+</div>
+
+<script>
+  if (window.parent !== window) {
+    var reportHeight = function () {
+      window.parent.postMessage({ type: "vv-dossier-resize", height: document.documentElement.scrollHeight }, "*");
+    };
+    new ResizeObserver(reportHeight).observe(document.body);
+    window.addEventListener("load", reportHeight);
+    reportHeight();
+  }
+</script>
