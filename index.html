@@ -244,6 +244,14 @@
     border: 1px solid var(--border);
     padding: 3px 8px;
     border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .code-badge:hover {
+    background: var(--accent-tint);
+    border-color: var(--accent);
+    color: var(--accent-deep);
   }
   .channel-dot {
     width: 8px; height: 8px; border-radius: 50%;
@@ -605,12 +613,17 @@ for (const phaseNum of [1, 2, 3, 4]) {
     const summary = document.createElement("summary");
     summary.className = "msg-summary";
     summary.innerHTML =
-      '<div class="code-cell"><span class="channel-dot ' + m.type + '"></span><span class="code-badge">' + code + '</span></div>' +
+      '<div class="code-cell"><span class="channel-dot ' + m.type + '"></span><a class="code-badge" href="https://stranalys21.github.io/vv-dossier-transactionnel/#msg-' + code + '" target="_blank" rel="noopener" title="Lien direct vers ' + code + '">' + code + '</a></div>' +
       '<div class="titre-cell"><div class="titre">' + escapeHtml(m.titre) + '</div><div class="declencheur">' + escapeHtml(m.declencheur) + '</div></div>' +
       '<div class="obj-cell">' + escapeHtml(m.objectif) + '</div>' +
       '<button type="button" class="link-btn" data-code="' + code + '" title="Copier le lien direct vers ' + code + '">' + linkSvg + '</button>' +
       '<div class="chev">' + chevronSvg + '</div>';
     details.appendChild(summary);
+
+    const codeLink = summary.querySelector(".code-badge");
+    codeLink.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
 
     const linkBtn = summary.querySelector(".link-btn");
     linkBtn.addEventListener("click", function (e) {
